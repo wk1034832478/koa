@@ -31,9 +31,12 @@ public class LoginController {
     private Map<String,String> codeMap = new HashMap<String,String>();
 
     @PostMapping("/api/account/save")
-    public String save(Account account) {
+    public String save(Account account,@RequestParam(value = "isLogin", required = false) Boolean isLogin) {
         try {
             this.accountService.save( account );
+            if ( isLogin != null && isLogin ) {
+                this.request.login(account.getUsername(), account.getPassword());
+            }
             return responseFactory.create("申请账户成功",ResponseCode.SUCCESS);
         }catch (org.springframework.dao.DataIntegrityViolationException e1) {
             return responseFactory.create("该账户已经被注册过了",ResponseCode.HAS_REGISTRIED);
@@ -111,12 +114,11 @@ public class LoginController {
                 public void run() {
                     LoginController.this.codeMap.remove( MessageUtil.KEY );
                     LoginController.this.logger.warn("验证码已经删除");
-                    timer.cancel();
                 }
             }, 1000 * 60 ); // 1分钟之类删除验证码
             return responseFactory.create( "发送成功" , ResponseCode.SUCCESS);
         } catch (Exception e ) {
-            return responseFactory.create(e .getMessage() , ResponseCode.ERROR);
+            return responseFactory.create( "验证码发送失败：" + e .getMessage() , ResponseCode.ERROR);
         }
     }
     @PostMapping("/api/user/validate_capture")

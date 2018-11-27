@@ -4,6 +4,7 @@ public class ResponseMessage {
     private String msg;
     private int code;
     private Object object;
+    private PageMessage pageMessage;
     public ResponseMessage(String msg) {
         this.msg = msg;
     }
@@ -21,9 +22,22 @@ public class ResponseMessage {
         this.msg = msg;
         this.code = code;
 }
+    public ResponseMessage(Object object, PageMessage pageMessage, int code) {
+        this.object = object;
+        this.pageMessage = pageMessage;
+        this.code = code;
+    }
     public ResponseMessage(Object object, int code) {
         this.object = object;
         this.code = code;
+    }
+
+    public PageMessage getPage() {
+        return pageMessage;
+    }
+
+    public void setPage(PageMessage pageMessage) {
+        this.pageMessage = pageMessage;
     }
 
     public int getCode() {

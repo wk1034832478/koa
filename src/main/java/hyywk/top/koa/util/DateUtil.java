@@ -50,7 +50,7 @@ public class DateUtil {
                 }
         } catch (Exception e) {
             this.logger.info("正则表达式无法解析当前日期:{}",dateString);
-            e.printStackTrace();
+            // e.printStackTrace();
         }
         try {
             Matcher matcher = this.timestampPattern.matcher( dateString );
@@ -60,15 +60,22 @@ public class DateUtil {
                 return date;
             }
         } catch( Exception e ) {
-            e.printStackTrace();
+            // e.printStackTrace();
         }
 
         try {
             return DateFormat.getInstance().parse( dateString );
         } catch (Exception e) {
-            e.printStackTrace();
+           //  e.printStackTrace();
+        }
+
+        try {
+            return new Date( dateString );
+        }catch (Exception e) {
+            // e.printStackTrace();
         }
         // 如果无法解析，则返回空
+        this.logger.info( "无法解析" );
         return null;
     }
 
@@ -79,6 +86,7 @@ public class DateUtil {
                 return i;
             }
         }
+        this.logger.info( "日期转化器转换失败" );
        throw new Exception( "未知的月份:" + month );
     }
 }

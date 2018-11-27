@@ -13,6 +13,9 @@ public class ResponseFactory {
     public String create(Object obj, int code) {
         return jsonUtil.convertObjectToString( new ResponseMessage(obj,code) );
     }
+    public String create(Object obj,PageMessage pageMessage, int code) {
+        return jsonUtil.convertObjectToString( new ResponseMessage(obj,pageMessage,code) );
+    }
     public String createByMsg(String msg) {
         return jsonUtil.convertObjectToString( new ResponseMessage(msg) );
     }
